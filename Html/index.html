@@ -3,9 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TG1 ASI (Loja virtual)</title>
 </head>
 <body>
-    
+  <body>
+
+<nav>
+    <h1>🛍️ Loja Virtual</h1>
+    <a href="carrinho.html" class="carrinho-link">🛒 Ver Carrinho</a>
+</nav>
+
+<div class="painel">
+    <h2>📦 Adicionar novo produto</h2>
+    <div class="form-adicionar">
+        <div class="campo">
+            <label for="nomeProduto">Nome do produto</label>
+            <input type="text" id="nomeProduto" placeholder="Ex: Camiseta" maxlength="40">
+        </div>
+        <div class="campo">
+            <label for="precoProduto">Preço (R$)</label>
+            <input type="number" id="precoProduto" placeholder="99.90" step="0.01" min="0.01">
+        </div>
+        <button id="btnAdicionarProduto">➕ Adicionar</button>
+    </div>
+</div>
+
+<div class="painel">
+    <h2>🛒 Produtos disponíveis</h2>
+    <div id="containerListaProdutos" class="lista-produtos">
+        <div class="mensagem-vazia">Nenhum produto cadastrado.</div>
+    </div>
+</div>
+  
 </body>
 </html>
