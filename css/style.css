@@ -91,3 +91,16 @@ nav a.carrinho-link:hover {
 #btnAdicionarProduto:hover {
     background-color: #1e8449;
 }
+
+.lista-produtos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.mensagem-vazia {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    padding: 1rem;
+}
