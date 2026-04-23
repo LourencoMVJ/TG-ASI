@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Finalizar Compra </title>
+    <link rel="stylesheet" href=""> <!-- link para o css especifico do checkout, ex:C:\Users\jshad\Documents\TG-ASI\TG-ASI\css\checkout.css -->
+</head>
+<body>
+    <div class="checkout-container">
+        <div class="header">
+            <h1>Checkout</h1>
+            <p>Revise seu pedido e finalize a compra</p>
+        </div>
+
+        <div class="cart-main">
+            <!-- Lista de itens do carrinho -->
+            <div class="cart-items-wrapper">
+                <h2>Itens no carrinho</h2>
+                <div id="cart-items-list" class="cart-items-list">
+                    <!--  itens  seraorenderizados via js -->
+                    <div class="empty-message">Seu carrinho está vazio.</div>
+                </div>
+            </div>
+
+            <!-- resumo e total -->
+            <div class="cart-summary-card">
+                <h2> Resumo da compra</h2>
+                <div class="summary-row">
+                    <span>Quantidade de produtos:</span>
+                    <span id="total-quantity" class="summary-value">0</span>
+                </div>
+                <div class="summary-row">
+                    <span> Valor total da compra:</span>
+                    <span id="total-price" class="summary-value">MZN 0,00</span>
+                </div>
+                <button id="finalize-checkout-btn" class="btn-finalize"> Finalizar Compra</button>
+                <button id="continue-shopping-btn" class="btn-secondary">← Continuar a comprar</button>
+            </div>
+        </div>
+    </div>
+    <script src=" C:\Users\jshad\Documents\TG-ASI\TG-ASI\js\checkout.js"></script> <!-- link para o js do checkout, ex: C:\Users\jshad\Documents\TG-ASI\TG-ASI\js\checkout.js -->
+</body>
+</html>
