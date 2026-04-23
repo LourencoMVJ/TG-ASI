@@ -245,7 +245,7 @@ h2 {
     background: #cbd5e1;
 }
 
-/* --- Responsivo  --- */
+/* --- Responsivo para mobile  --- */
 
 @media (max-width: 700px) {
     .cart-main {
