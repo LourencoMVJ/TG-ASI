@@ -246,7 +246,7 @@ function renderizarPainelCarrinho() {
         <div class="painel-resumo-linha"><span>Subtotal</span><span>MZM ${subtotal}</span></div>
         <div class="painel-resumo-linha"><span>Impostos (10%)</span><span>MZM ${impostos}</span></div>
         <div class="painel-resumo-linha total"><span>Total</span><span>MZM ${total}</span></div>
-        <a href="carrinho.html" class="btn-painel-checkout">Ir para o carrinho</a>
+        <a href="checkout.html" class="btn-painel-checkout">Ir para checkout</a>
         <button class="btn-painel-limpar" onclick="limparCarrinho()">🗑️ Limpar Carrinho</button>
     `;
 }
