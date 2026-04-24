@@ -18,7 +18,7 @@ function gerarIdProduto() {
     return produtos.length ? Math.max(...produtos.map(p => p.id)) + 1 : 1;
 }
 
-// Renderiza lista de produtos
+// Renderiza lista de produtos (clique no card inteiro adiciona ao carrinho)
 function renderizarProdutos() {
     const container = document.getElementById('containerListaProdutos');
     if (!container) return;
@@ -29,14 +29,13 @@ function renderizarProdutos() {
     }
     
     const html = produtos.map(p => `
-        <div class="produto-item">
+        <div class="produto-item" onclick="adicionarAoCarrinho(${p.id})">
             <div class="produto-info">
                 <strong>${p.nome}</strong>
-                <span class="preco">MZM ${parseFloat(p.preco).toFixed(2)}</span>
+                <span class="preco-pequeno">MZM ${parseFloat(p.preco).toFixed(2)}</span>
             </div>
             <div class="produto-acoes">
-                <button onclick="adicionarAoCarrinho(${p.id})" class="btn-carrinho">🛒</button>
-                ${ehAdmin() ? `<button onclick="removerProduto(${p.id})" class="btn-remover">❌</button>` : ''}
+                ${ehAdmin() ? `<button onclick="event.stopPropagation(); removerProduto(${p.id})" class="btn-remover">❌</button>` : ''}
             </div>
         </div>
     `).join('');
@@ -59,6 +58,7 @@ function removerProduto(id) {
         sincronizarCarrinhoComProdutos();
         salvarCarrinho();
         renderizarCarrinho();
+        renderizarPainelCarrinho();   // já atualiza o painel lateral também
     }
     mostrarNotificacao('🗑️ Produto removido');
 }
