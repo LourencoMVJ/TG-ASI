@@ -285,19 +285,10 @@ nav a.carrinho-link:hover {
     border-color: #2c3e50;
 }
 
-#btnAdicionarProduto {
-    background-color: #27ae60;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    align-self: flex-start;
-}
-
-#btnAdicionarProduto:hover {
-    background-color: #1e8449;
+nav > div {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 
 .lista-produtos {
