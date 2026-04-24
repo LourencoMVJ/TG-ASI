@@ -276,7 +276,6 @@ nav a {
     border-radius: 5px;
     background-color: #f9f9f9;
     transition: box-shadow 0.3s;
-    cursor: pointer;
 }
 .produto-item:hover {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -298,6 +297,21 @@ nav a {
 .produto-acoes {
     display: flex;
     gap: 0.5rem;
+    align-items: center;
+}
+.btn-adicionar {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+.btn-adicionar:hover {
+    background-color: #1e8449;
 }
 .btn-remover {
     background-color: transparent;

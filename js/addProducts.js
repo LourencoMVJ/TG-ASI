@@ -16,6 +16,7 @@ function fazerLogin(username, tipo = 'customer') {
     };
     sessionStorage.setItem('utilizadorAtual', JSON.stringify(utilizadorAtual));
     atualizarUILogin();
+    renderizarProdutos();
     mostrarNotificacao(`Bem-vindo, ${username}!`);
 }
 
@@ -24,6 +25,7 @@ function fazerLogout() {
     utilizadorAtual = null;
     sessionStorage.removeItem('utilizadorAtual');
     atualizarUILogin();
+    renderizarProdutos();
     mostrarNotificacao('Desconectado com sucesso');
 }
 
