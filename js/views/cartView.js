@@ -72,7 +72,7 @@ function renderizarResumo() {
             <span>TOTAL:</span>
             <strong>MZN ${total}</strong>
         </div>
-        <button onclick="finalizarCompra()" class="btn-finalizar">Finalizar Compra</button>
+        <a href="checkout.html" class="btn-finalizar">Ir para checkout</a>
         <button onclick="limparCarrinho()" class="btn-limpar">Limpar Carrinho</button>
     `;
 }
