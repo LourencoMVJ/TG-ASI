@@ -28,27 +28,6 @@ nav a {
     text-decoration: none;
 }
 
-nav a.carrinho-link {
-    background-color: #e67e22;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-nav a.carrinho-link:hover {
-    background-color: #d35400;
-}
-
-/* badge no menu */
-.badge-carrinho-nav {
-    background: #e74c3c;
-    color: white;
-    border-radius: 50%;
-    padding: 0.1rem 0.4rem;
-    font-size: 0.75rem;
-    margin-left: 0.3rem;
-    display: none;
-}
 
 /* ===================== AUTENTICAÇÃO ===================== */
 #painelLogin {
@@ -674,6 +653,21 @@ nav a.carrinho-link:hover {
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 600px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+
+    nav h1 {
+        font-size: 1.2rem;
+    }
+
+    nav > div {
+        width: 100%;
+    }
+
     .painel {
         max-width: 95%;
         margin: 1rem auto;
