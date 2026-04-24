@@ -95,14 +95,14 @@ function renderizarCarrinho() {
             <div class="item-carrinho">
                 <div class="item-info">
                     <strong>${item.nome}</strong>
-                    <span class="preco">R$ ${parseFloat(item.preco).toFixed(2)}</span>
+                    <span class="preco">MZM ${parseFloat(item.preco).toFixed(2)}</span>
                 </div>
                 <div class="item-controles">
                     <button onclick="alterarQuantidade(${item.id}, -1)" class="btn-qtd">−</button>
                     <span class="qtd">${item.quantidade}</span>
                     <button onclick="alterarQuantidade(${item.id}, 1)" class="btn-qtd">+</button>
                 </div>
-                <div class="item-subtotal">R$ ${subtotal}</div>
+                <div class="item-subtotal">MZM ${subtotal}</div>
                 <button onclick="removerDoCarrinho(${item.id})" class="btn-remover">🗑️</button>
             </div>
         `;
@@ -176,15 +176,15 @@ function renderizarResumo() {
         </div>
         <div class="resumo-linha">
             <span>Subtotal:</span>
-            <strong>R$ ${subtotal.toFixed(2)}</strong>
+            <strong>MZM ${subtotal.toFixed(2)}</strong>
         </div>
         <div class="resumo-linha">
             <span>Impostos (10%):</span>
-            <strong>R$ ${impostos}</strong>
+            <strong>MZM ${impostos}</strong>
         </div>
         <div class="resumo-linha resumo-total">
             <span>TOTAL:</span>
-            <strong>R$ ${total}</strong>
+            <strong>MZM ${total}</strong>
         </div>
         <button onclick="finalizarCompra()" class="btn-finalizar">✅ Finalizar Compra</button>
         <button onclick="limparCarrinho()" class="btn-limpar">🗑️ Limpar Carrinho</button>
@@ -199,11 +199,8 @@ function finalizarCompra() {
     }
     
     const total = calcularTotal();
-    if (confirm(`Finalizar compra no valor de R$ ${parseFloat(total).toFixed(2)}?`)) {
-        alert('✅ Compra realizada com sucesso!');
-        carrinho = [];
-        salvarCarrinho();
-        renderizarCarrinho();
+    if (confirm(`Finalizar compra no valor de MZM ${parseFloat(total).toFixed(2)}?`)) {
+        
     }
 }
 

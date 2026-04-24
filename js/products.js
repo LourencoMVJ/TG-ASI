@@ -32,7 +32,7 @@ function renderizarProdutos() {
         <div class="produto-item">
             <div class="produto-info">
                 <strong>${p.nome}</strong>
-                <span class="preco">R$ ${parseFloat(p.preco).toFixed(2)}</span>
+                <span class="preco">MZM ${parseFloat(p.preco).toFixed(2)}</span>
             </div>
             <div class="produto-acoes">
                 <button onclick="adicionarAoCarrinho(${p.id})" class="btn-carrinho">🛒</button>
