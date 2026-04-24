@@ -33,22 +33,16 @@ function sincronizarCarrinhoComProdutos() {
         carrinho = [];
         return;
     }
-    
     const idsValidos = produtos.map(p => p.id);
-    const originalLength = carrinho.length;
     carrinho = carrinho.filter(item => idsValidos.includes(item.id));
-    if (carrinho.length !== originalLength) {
-        mostrarNotificacao('🧹 Carrinho sincronizado com catálogo');
-    }
 }
 
 // Adiciona ao carrinho
 function adicionarAoCarrinho(idProduto) {
     const produto = produtos.find(p => p.id === idProduto);
     if (!produto) return;
-    
+
     const item = carrinho.find(i => i.id === idProduto);
-    
     if (item) {
         item.quantidade++;
         mostrarNotificacao(`🛒 ${produto.nome} (Qtd: ${item.quantidade})`);
@@ -61,34 +55,34 @@ function adicionarAoCarrinho(idProduto) {
         });
         mostrarNotificacao(`✅ ${produto.nome} adicionado ao carrinho!`);
     }
-    
+
     salvarCarrinho();
     renderizarCarrinho();
+    renderizarPainelCarrinho(); // atualiza painel lateral
 }
 
-// Remove do carrinho
+// Remove do carrinho (única definição)
 function removerDoCarrinho(id) {
     const item = carrinho.find(i => i.id === id);
-    if (item) {
-        mostrarNotificacao(`🗑️ ${item.nome} removido`);
-    }
+    if (item) mostrarNotificacao(`🗑️ ${item.nome} removido`);
     carrinho = carrinho.filter(i => i.id !== id);
     salvarCarrinho();
     renderizarCarrinho();
+    renderizarPainelCarrinho();
 }
 
-// Renderiza carrinho
+// Renderiza carrinho (página carrinho.html)
 function renderizarCarrinho() {
     sincronizarCarrinhoComProdutos();
     const container = document.getElementById('containerCarrinho');
     if (!container) return;
-    
+
     if (carrinho.length === 0) {
         container.innerHTML = '<div class="vazio">Carrinho vazio</div>';
         renderizarResumo();
         return;
     }
-    
+
     const html = carrinho.map(item => {
         const subtotal = (parseFloat(item.preco) * item.quantidade).toFixed(2);
         return `
@@ -107,7 +101,7 @@ function renderizarCarrinho() {
             </div>
         `;
     }).join('');
-    
+
     container.innerHTML = html;
     renderizarResumo();
 }
@@ -116,26 +110,15 @@ function renderizarCarrinho() {
 function alterarQuantidade(id, delta) {
     const item = carrinho.find(i => i.id === id);
     if (!item) return;
-    
+
     item.quantidade += delta;
-    
     if (item.quantidade <= 0) {
         removerDoCarrinho(id);
     } else {
         salvarCarrinho();
         renderizarCarrinho();
+        renderizarPainelCarrinho();
     }
-}
-
-// Remove do carrinho
-function removerDoCarrinho(id) {
-    const item = carrinho.find(i => i.id === id);
-    if (item) {
-        mostrarNotificacao(`🗑️ ${item.nome} removido`);
-    }
-    carrinho = carrinho.filter(i => i.id !== id);
-    salvarCarrinho();
-    renderizarCarrinho();
 }
 
 // Limpa todo o carrinho
@@ -144,14 +127,13 @@ function limparCarrinho() {
     carrinho = [];
     salvarCarrinho();
     renderizarCarrinho();
+    renderizarPainelCarrinho();
     mostrarNotificacao('🗑️ Carrinho limpado');
 }
 
 // Calcula total
 function calcularTotal() {
-    return carrinho.reduce((total, item) => {
-        return total + (parseFloat(item.preco) * item.quantidade);
-    }, 0);
+    return carrinho.reduce((total, item) => total + (parseFloat(item.preco) * item.quantidade), 0);
 }
 
 // Calcula impostos (10%)
@@ -159,16 +141,16 @@ function calcularImpostos(total) {
     return (total * 0.10).toFixed(2);
 }
 
-// Renderiza resumo do carrinho
+// Renderiza resumo do carrinho (páginas carrinho/checkout)
 function renderizarResumo() {
     const container = document.getElementById('resumoCarrinho');
     if (!container) return;
-    
+
     const subtotal = calcularTotal();
     const impostos = calcularImpostos(subtotal);
-    const total = (parseFloat(subtotal) + parseFloat(impostos)).toFixed(2);
+    const total = (subtotal + parseFloat(impostos)).toFixed(2);
     const quantidade = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
-    
+
     container.innerHTML = `
         <div class="resumo-linha">
             <span>Itens:</span>
@@ -186,7 +168,7 @@ function renderizarResumo() {
             <span>TOTAL:</span>
             <strong>MZM ${total}</strong>
         </div>
-        <button onclick="finalizarCompra()" class="btn-finalizar">✅ Checkout</button>
+        <button onclick="finalizarCompra()" class="btn-finalizar">✅ Finalizar Compra</button>
         <button onclick="limparCarrinho()" class="btn-limpar">🗑️ Limpar Carrinho</button>
     `;
 }
@@ -197,20 +179,74 @@ function finalizarCompra() {
         alert('Carrinho vazio!');
         return;
     }
-
-    const total = calcularTotal();
-    if (confirm(`Finalizar compra no valor de MZM ${parseFloat(total).toFixed(2)}?`)) {
-        localStorage.setItem('carrinho_checkout', JSON.stringify(carrinho));
-        window.location.href = 'checkout.html';
+    const total = calcularTotal().toFixed(2);
+    if (confirm(`Finalizar compra no valor de MZM ${total}?`)) {
+        alert('✅ Compra realizada com sucesso!');
+        carrinho = [];
+        salvarCarrinho();
+        renderizarCarrinho();
+        renderizarPainelCarrinho();
     }
 }
 
-// Atualiza badge do carrinho
+// Atualiza badges (ícone flutuante e menu)
 function atualizarBadgeCarrinho() {
-    const badge = document.getElementById('badgeCarrinho');
-    if (badge) {
-        const quantidade = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
-        badge.textContent = quantidade;
-        badge.style.display = quantidade > 0 ? 'block' : 'none';
+    const quantidade = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
+    const badgeIcon = document.getElementById('badgeCarrinho');
+    const badgeNav = document.getElementById('badgeCarrinhoNav');
+    if (badgeIcon) {
+        badgeIcon.textContent = quantidade;
+        badgeIcon.style.display = quantidade > 0 ? 'flex' : 'none';
     }
+    if (badgeNav) {
+        badgeNav.textContent = quantidade;
+        badgeNav.style.display = quantidade > 0 ? 'inline' : 'none';
+    }
+}
+
+// ============ PAINEL LATERAL DO CARRINHO ============
+function renderizarPainelCarrinho() {
+    const conteudo = document.getElementById('painelCarrinhoConteudo');
+    const resumo = document.getElementById('painelCarrinhoResumo');
+    if (!conteudo || !resumo) return;
+
+    if (carrinho.length === 0) {
+        conteudo.innerHTML = '<div class="painel-carrinho-vazio">Carrinho vazio</div>';
+        resumo.innerHTML = '';
+        return;
+    }
+
+    let html = carrinho.map(item => {
+        const subtotal = (parseFloat(item.preco) * item.quantidade).toFixed(2);
+        return `
+            <div class="painel-item">
+                <div class="painel-item-left">
+                    <span class="painel-item-nome">${item.nome}</span>
+                    <span class="painel-item-preco">MZM ${parseFloat(item.preco).toFixed(2)}</span>
+                </div>
+                <div class="painel-item-right">
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="alterarQuantidade(${item.id}, -1)">−</button>
+                        <span class="qty-number">${item.quantidade}</span>
+                        <button class="qty-btn" onclick="alterarQuantidade(${item.id}, 1)">+</button>
+                    </div>
+                    <span class="painel-item-subtotal">MZM ${subtotal}</span>
+                    <button class="remove-item" onclick="removerDoCarrinho(${item.id})">🗑️</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    conteudo.innerHTML = html;
+
+    const subtotal = calcularTotal().toFixed(2);
+    const impostos = calcularImpostos(calcularTotal());
+    const total = (parseFloat(subtotal) + parseFloat(impostos)).toFixed(2);
+
+    resumo.innerHTML = `
+        <div class="painel-resumo-linha"><span>Subtotal</span><span>MZM ${subtotal}</span></div>
+        <div class="painel-resumo-linha"><span>Impostos (10%)</span><span>MZM ${impostos}</span></div>
+        <div class="painel-resumo-linha total"><span>Total</span><span>MZM ${total}</span></div>
+        <a href="carrinho.html" class="btn-painel-checkout">Ir para o carrinho</a>
+        <button class="btn-painel-limpar" onclick="limparCarrinho()">🗑️ Limpar Carrinho</button>
+    `;
 }
