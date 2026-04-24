@@ -186,7 +186,7 @@ function renderizarResumo() {
             <span>TOTAL:</span>
             <strong>MZM ${total}</strong>
         </div>
-        <button onclick="finalizarCompra()" class="btn-finalizar">✅ Finalizar Compra</button>
+        <button onclick="finalizarCompra()" class="btn-finalizar">✅ Checkout</button>
         <button onclick="limparCarrinho()" class="btn-limpar">🗑️ Limpar Carrinho</button>
     `;
 }
@@ -197,10 +197,11 @@ function finalizarCompra() {
         alert('Carrinho vazio!');
         return;
     }
-    
+
     const total = calcularTotal();
     if (confirm(`Finalizar compra no valor de MZM ${parseFloat(total).toFixed(2)}?`)) {
-        
+        localStorage.setItem('carrinho_checkout', JSON.stringify(carrinho));
+        window.location.href = 'checkout.html';
     }
 }
 

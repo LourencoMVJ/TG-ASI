@@ -2,40 +2,33 @@
 // estrutura do item: { id, nome, preco, quantidade }
 let itensCarrinho = [];
 
-// carregar carrinho do armazenamento local
+// carregar carrinho do armazenamento local (agora sem dados de exemplo)
 function carregarCarrinho() {
     const dados = localStorage.getItem('carrinho_checkout');
     if (dados) {
         try {
             itensCarrinho = JSON.parse(dados);
-        } catch(e) { itensCarrinho = []; }
+        } catch(e) {
+            itensCarrinho = [];
+        }
     }
-    // se vazio, adiciona produtos de exemplo
-    if (!itensCarrinho || itensCarrinho.length === 0) {
-        itensCarrinho = [
-            { id: 1, nome: "Camisa", preco: 250.00, quantidade: 2 },
-            { id: 2, nome: "Calca Jeans", preco: 1500.00, quantidade: 1 },
-            { id: 3, nome: "Sapatilha", preco: 3400.00, quantidade: 1 },
-            { id: 4, nome: "Chapeu", preco: 350.00, quantidade: 3 }
-        ];
-        salvarCarrinho();
-    }
+    
 }
 
 function salvarCarrinho() {
     localStorage.setItem('carrinho_checkout', JSON.stringify(itensCarrinho));
 }
 
-// -------------------- calculos (foco: total de produtos e valor total) --------------------
+// -------------------- calculos --------------------
 function obterQuantidadeTotal() {
     return itensCarrinho.reduce((soma, item) => soma + item.quantidade, 0);
 }
 
 function obterValorTotal() {
-    return itensCarrinho.reduce((soma, item) => soma + (item.preco * item.quantidade), 0);
+    return itensCarrinho.reduce((soma, item) => soma + (parseFloat(item.preco) * item.quantidade), 0);
 }
 
-// -------------------- visualizacao e eventos --------------------
+// -------------------- visualizacão (SEM botões de edição) --------------------
 function renderizarCheckout() {
     const container = document.getElementById('cart-items-list');
     const totalQtSpan = document.getElementById('total-quantity');
@@ -47,20 +40,19 @@ function renderizarCheckout() {
         container.innerHTML = `<div class="empty-message">carrinho vazio. adicione produtos para finalizar a compra.</div>`;
     } else {
         const htmlItens = itensCarrinho.map(item => {
-            const subtotal = item.preco * item.quantidade;
+            // Garantir que o preço é número
+            const precoNum = parseFloat(item.preco);
+            const subtotal = precoNum * item.quantidade;
             return `
                 <div class="cart-item" data-id="${item.id}">
                     <div class="item-info">
                         <div class="item-name">${escapeHtml(item.nome)}</div>
-                        <div class="item-price">MZN ${item.preco.toFixed(2)}</div>
+                        <div class="item-price">MZN ${precoNum.toFixed(2)}</div>
                     </div>
                     <div class="item-controls">
                         <div class="qty-control">
-                            <button class="qty-btn dec" data-id="${item.id}">-</button>
                             <span class="qty-number">${item.quantidade}</span>
-                            <button class="qty-btn inc" data-id="${item.id}">+</button>
                         </div>
-                        <button class="remove-item" data-id="${item.id}">remover</button>
                         <div class="subtotal">MZN ${subtotal.toFixed(2)}</div>
                     </div>
                 </div>
@@ -84,64 +76,27 @@ function escapeHtml(texto) {
     });
 }
 
-// -------------------- accoes do utilizador --------------------
-function actualizarInterface() {
-    salvarCarrinho();
-    renderizarCheckout();
-}
-
-function alterarQuantidade(idProduto, delta) {
-    const indice = itensCarrinho.findIndex(item => item.id === idProduto);
-    if (indice !== -1) {
-        const novaQt = itensCarrinho[indice].quantidade + delta;
-        if (novaQt <= 0) {
-            itensCarrinho.splice(indice, 1);
-        } else {
-            itensCarrinho[indice].quantidade = novaQt;
-        }
-        actualizarInterface();
-    }
-}
-
-function removerItem(idProduto) {
-    itensCarrinho = itensCarrinho.filter(item => item.id !== idProduto);
-    actualizarInterface();
-}
-
+// -------------------- accoes do utilizador (sem alteração) --------------------
 function finalizarCompra() {
     if (itensCarrinho.length === 0) {
         alert("carrinho vazio. adicione produtos para encerrar a compra.");
         return;
     }
     if (confirm("confirmar finalizacao da compra? o carrinho sera esvaziado.")) {
+        // Limpa também o carrinho original (chave 'carrinho' usada no cart.js)
+        localStorage.removeItem('carrinho');
+        localStorage.removeItem('carrinho_checkout');
+
         itensCarrinho = [];
-        salvarCarrinho();
         renderizarCheckout();
         alert("compra finalizada com sucesso. obrigado.");
+        // Opcional: redirecionar para a loja ou página de confirmação
+        // window.location.href = 'index.html';
     }
 }
 
-// delegacao de eventos para botoes dinamicos (+ , - , remover)
-function associarEventosDelegados() {
-    const container = document.getElementById('cart-items-list');
-    if (!container) return;
-
-    container.addEventListener('click', (e) => {
-        const botao = e.target;
-        if (botao.classList.contains('inc')) {
-            const id = parseInt(botao.getAttribute('data-id'));
-            if (id) alterarQuantidade(id, 1);
-        }
-        else if (botao.classList.contains('dec')) {
-            const id = parseInt(botao.getAttribute('data-id'));
-            if (id) alterarQuantidade(id, -1);
-        }
-        else if (botao.classList.contains('remove-item')) {
-            const id = parseInt(botao.getAttribute('data-id'));
-            if (id) removerItem(id);
-        }
-    });
-}
+// Removidas as funções alterarQuantidade(), removerItem() e a delegação de eventos,
+// pois não há mais botões de ação.
 
 function configurarBotaoFinalizar() {
     const botao = document.getElementById('finalize-checkout-btn');
@@ -153,18 +108,17 @@ function configurarBotaoContinuar() {
     if (botao) {
         botao.addEventListener('click', () => {
             if (confirm("voltar a loja? o carrinho atual sera mantido.")) {
-                alert("redirecionar para pagina de produtos. por enquanto o carrinho continua o mesmo.");
                 window.location.href = "index.html";
             }
         });
     }
 }
 
-// -------------------- inicializacao --------------------
+// -------------------- inicializacão --------------------
 function iniciar() {
     carregarCarrinho();
     renderizarCheckout();
-    associarEventosDelegados();
+    // NÃO associamos eventos de clique para +, -, remover
     configurarBotaoFinalizar();
     configurarBotaoContinuar();
 }
