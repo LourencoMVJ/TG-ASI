@@ -137,33 +137,18 @@ function calcularTotal() {
     return carrinho.reduce((total, item) => total + (parseFloat(item.preco) * item.quantidade), 0);
 }
 
-// Calcula impostos (10%)
-function calcularImpostos(total) {
-    return (total * 0.10).toFixed(2);
-}
-
 // Renderiza resumo do carrinho (páginas carrinho/checkout)
 function renderizarResumo() {
     const container = document.getElementById('resumoCarrinho');
     if (!container) return;
 
-    const subtotal = calcularTotal();
-    const impostos = calcularImpostos(subtotal);
-    const total = (subtotal + parseFloat(impostos)).toFixed(2);
+    const total = calcularTotal().toFixed(2);
     const quantidade = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
 
     container.innerHTML = `
         <div class="resumo-linha">
             <span>Itens:</span>
             <strong>${quantidade}</strong>
-        </div>
-        <div class="resumo-linha">
-            <span>Subtotal:</span>
-            <strong>MZN ${subtotal.toFixed(2)}</strong>
-        </div>
-        <div class="resumo-linha">
-            <span>Impostos (10%):</span>
-            <strong>MZN ${impostos}</strong>
         </div>
         <div class="resumo-linha resumo-total">
             <span>TOTAL:</span>
@@ -239,13 +224,9 @@ function renderizarPainelCarrinho() {
     }).join('');
     conteudo.innerHTML = html;
 
-    const subtotal = calcularTotal().toFixed(2);
-    const impostos = calcularImpostos(calcularTotal());
-    const total = (parseFloat(subtotal) + parseFloat(impostos)).toFixed(2);
+    const total = calcularTotal().toFixed(2);
 
     resumo.innerHTML = `
-        <div class="painel-resumo-linha"><span>Subtotal</span><span>MZN ${subtotal}</span></div>
-        <div class="painel-resumo-linha"><span>Impostos (10%)</span><span>MZN ${impostos}</span></div>
         <div class="painel-resumo-linha total"><span>Total</span><span>MZN ${total}</span></div>
         <a href="checkout.html" class="btn-painel-checkout">Ir para checkout</a>
         <button class="btn-painel-limpar" onclick="limparCarrinho()">Limpar Carrinho</button>
