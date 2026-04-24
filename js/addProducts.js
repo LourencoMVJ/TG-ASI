@@ -16,7 +16,7 @@ function fazerLogin(username, tipo = 'customer') {
     };
     sessionStorage.setItem('utilizadorAtual', JSON.stringify(utilizadorAtual));
     atualizarUILogin();
-    mostrarNotificacao(`✅ Bem-vindo, ${username}!`);
+    mostrarNotificacao(`Bem-vindo, ${username}!`);
 }
 
 // Faz logout
@@ -24,7 +24,7 @@ function fazerLogout() {
     utilizadorAtual = null;
     sessionStorage.removeItem('utilizadorAtual');
     atualizarUILogin();
-    mostrarNotificacao('👋 Desconectado com sucesso');
+    mostrarNotificacao('Desconectado com sucesso');
 }
 
 // Verifica se é admin
@@ -49,7 +49,7 @@ function atualizarUILogin() {
         panelLogin.innerHTML = `
             <div class="info-usuario">
                 <span class="nome-usuario">${utilizadorAtual.username}</span>
-                <span class="tipo-usuario">${ehAdmin() ? '👑 Admin' : '👤 Cliente'}</span>
+                <span class="tipo-usuario">${ehAdmin() ? 'Admin' : 'Cliente'}</span>
                 <button onclick="fazerLogout()" class="btn-logout">Sair</button>
             </div>
         `;
@@ -58,7 +58,7 @@ function atualizarUILogin() {
         if (ehAdmin()) {
             botoesAdmin.style.display = 'flex';
             botoesAdmin.innerHTML = `
-                <button onclick="abrirModalAdicionarProduto()" class="btn-admin">📦 Adicionar Produto</button>
+                <button onclick="abrirModalAdicionarProduto()" class="btn-admin">Adicionar Produto</button>
             `;
         } else {
             botoesAdmin.style.display = 'none';
@@ -114,7 +114,7 @@ function fazerLoginFormulario() {
     const tipo = document.getElementById('selectTipo').value;
     
     if (!username || username.trim() === '') {
-        alert('❌ Username é obrigatório');
+        alert('Username é obrigatório');
         return;
     }
     
@@ -126,19 +126,19 @@ function fazerLoginFormulario() {
 // Valida nome e preço
 function validarProduto(nome, preco) {
     if (!nome || nome.trim() === '') {
-        alert('❌ Nome é obrigatório');
+        alert('Nome é obrigatório');
         return false;
     }
     
     const precoNum = parseFloat(preco);
     if (isNaN(precoNum) || precoNum <= 0) {
-        alert('❌ Preço deve ser um número positivo');
+        alert('Preço deve ser um número positivo');
         return false;
     }
     
     // Valida duas casas decimais
     if (!/^\d+(\.\d{1,2})?$/.test(precoNum.toFixed(2))) {
-        alert('❌ Preço deve ter no máximo 2 casas decimais');
+        alert('Preço deve ter no máximo 2 casas decimais');
         return false;
     }
     
@@ -148,7 +148,7 @@ function validarProduto(nome, preco) {
 // Adiciona produto (apenas se admin)
 function adicionarProduto(nome, preco) {
     if (!ehAdmin()) {
-        alert('❌ Apenas administradores podem adicionar produtos!');
+        alert('Apenas administradores podem adicionar produtos!');
         return false;
     }
     
@@ -162,6 +162,6 @@ function adicionarProduto(nome, preco) {
     
     produtos.push(produto);
     salvarProdutos();
-    mostrarNotificacao(`✅ "${produto.nome}" adicionado!`);
+    mostrarNotificacao(`"${produto.nome}" adicionado!`);
     return true;
 }

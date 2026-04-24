@@ -46,7 +46,7 @@ function adicionarAoCarrinho(idProduto) {
     const item = carrinho.find(i => i.id === idProduto);
     if (item) {
         item.quantidade++;
-        mostrarNotificacao(`🛒 ${produto.nome} (Qtd: ${item.quantidade})`);
+        mostrarNotificacao(`${produto.nome} (Qtd: ${item.quantidade})`);
     } else {
         carrinho.push({
             id: idProduto,
@@ -54,7 +54,7 @@ function adicionarAoCarrinho(idProduto) {
             preco: produto.preco,
             quantidade: 1
         });
-        mostrarNotificacao(`✅ ${produto.nome} adicionado ao carrinho!`);
+        mostrarNotificacao(`${produto.nome} adicionado ao carrinho!`);
     }
 
     salvarCarrinho();
@@ -65,7 +65,7 @@ function adicionarAoCarrinho(idProduto) {
 // Remove do carrinho (única definição)
 function removerDoCarrinho(id) {
     const item = carrinho.find(i => i.id === id);
-    if (item) mostrarNotificacao(`🗑️ ${item.nome} removido`);
+    if (item) mostrarNotificacao(`${item.nome} removido`);
     carrinho = carrinho.filter(i => i.id !== id);
     salvarCarrinho();
     renderizarCarrinho();
@@ -90,15 +90,15 @@ function renderizarCarrinho() {
             <div class="item-carrinho">
                 <div class="item-info">
                     <strong>${item.nome}</strong>
-                    <span class="preco">MZM ${parseFloat(item.preco).toFixed(2)}</span>
+                    <span class="preco">MZN ${parseFloat(item.preco).toFixed(2)}</span>
                 </div>
                 <div class="item-controles">
                     <button onclick="alterarQuantidade(${item.id}, -1)" class="btn-qtd">−</button>
                     <span class="qtd">${item.quantidade}</span>
                     <button onclick="alterarQuantidade(${item.id}, 1)" class="btn-qtd">+</button>
                 </div>
-                <div class="item-subtotal">MZM ${subtotal}</div>
-                <button onclick="removerDoCarrinho(${item.id})" class="btn-remover">🗑️</button>
+                <div class="item-subtotal">MZN ${subtotal}</div>
+                <button onclick="removerDoCarrinho(${item.id})" class="btn-remover">Remover</button>
             </div>
         `;
     }).join('');
@@ -129,7 +129,7 @@ function limparCarrinho() {
     salvarCarrinho();
     renderizarCarrinho();
     renderizarPainelCarrinho();
-    mostrarNotificacao('🗑️ Carrinho limpado');
+    mostrarNotificacao('Carrinho limpado');
 }
 
 // Calcula total
@@ -159,18 +159,18 @@ function renderizarResumo() {
         </div>
         <div class="resumo-linha">
             <span>Subtotal:</span>
-            <strong>MZM ${subtotal.toFixed(2)}</strong>
+            <strong>MZN ${subtotal.toFixed(2)}</strong>
         </div>
         <div class="resumo-linha">
             <span>Impostos (10%):</span>
-            <strong>MZM ${impostos}</strong>
+            <strong>MZN ${impostos}</strong>
         </div>
         <div class="resumo-linha resumo-total">
             <span>TOTAL:</span>
-            <strong>MZM ${total}</strong>
+            <strong>MZN ${total}</strong>
         </div>
-        <button onclick="finalizarCompra()" class="btn-finalizar">✅ Finalizar Compra</button>
-        <button onclick="limparCarrinho()" class="btn-limpar">🗑️ Limpar Carrinho</button>
+        <button onclick="finalizarCompra()" class="btn-finalizar">Finalizar Compra</button>
+        <button onclick="limparCarrinho()" class="btn-limpar">Limpar Carrinho</button>
     `;
 }
 
@@ -181,7 +181,7 @@ function finalizarCompra() {
         return;
     }
     const total = calcularTotal().toFixed(2);
-    if (confirm(`Finalizar compra no valor de MZM ${total}?`)) {
+    if (confirm(`Finalizar compra no valor de MZN ${total}?`)) {
         alert('✅ Compra realizada com sucesso!');
         carrinho = [];
         salvarCarrinho();
@@ -223,7 +223,7 @@ function renderizarPainelCarrinho() {
             <div class="painel-item">
                 <div class="painel-item-left">
                     <span class="painel-item-nome">${item.nome}</span>
-                    <span class="painel-item-preco">MZM ${parseFloat(item.preco).toFixed(2)}</span>
+                    <span class="painel-item-preco">MZN ${parseFloat(item.preco).toFixed(2)}</span>
                 </div>
                 <div class="painel-item-right">
                     <div class="qty-control">
@@ -231,8 +231,8 @@ function renderizarPainelCarrinho() {
                         <span class="qty-number">${item.quantidade}</span>
                         <button class="qty-btn" onclick="alterarQuantidade(${item.id}, 1)">+</button>
                     </div>
-                    <span class="painel-item-subtotal">MZM ${subtotal}</span>
-                    <button class="remove-item" onclick="removerDoCarrinho(${item.id})">🗑️</button>
+                    <span class="painel-item-subtotal">MZN ${subtotal}</span>
+                    <button class="remove-item" onclick="removerDoCarrinho(${item.id})">Remover</button>
                 </div>
             </div>
         `;
@@ -244,10 +244,10 @@ function renderizarPainelCarrinho() {
     const total = (parseFloat(subtotal) + parseFloat(impostos)).toFixed(2);
 
     resumo.innerHTML = `
-        <div class="painel-resumo-linha"><span>Subtotal</span><span>MZM ${subtotal}</span></div>
-        <div class="painel-resumo-linha"><span>Impostos (10%)</span><span>MZM ${impostos}</span></div>
-        <div class="painel-resumo-linha total"><span>Total</span><span>MZM ${total}</span></div>
+        <div class="painel-resumo-linha"><span>Subtotal</span><span>MZN ${subtotal}</span></div>
+        <div class="painel-resumo-linha"><span>Impostos (10%)</span><span>MZN ${impostos}</span></div>
+        <div class="painel-resumo-linha total"><span>Total</span><span>MZN ${total}</span></div>
         <a href="checkout.html" class="btn-painel-checkout">Ir para checkout</a>
-        <button class="btn-painel-limpar" onclick="limparCarrinho()">🗑️ Limpar Carrinho</button>
+        <button class="btn-painel-limpar" onclick="limparCarrinho()">Limpar Carrinho</button>
     `;
 }

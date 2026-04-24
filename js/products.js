@@ -32,10 +32,10 @@ function renderizarProdutos() {
         <div class="produto-item" onclick="adicionarAoCarrinho(${p.id})">
             <div class="produto-info">
                 <strong>${p.nome}</strong>
-                <span class="preco-pequeno">MZM ${parseFloat(p.preco).toFixed(2)}</span>
+                <span class="preco-pequeno">MZN ${parseFloat(p.preco).toFixed(2)}</span>
             </div>
             <div class="produto-acoes">
-                ${ehAdmin() ? `<button onclick="event.stopPropagation(); removerProduto(${p.id})" class="btn-remover">❌</button>` : ''}
+                ${ehAdmin() ? `<button onclick="event.stopPropagation(); removerProduto(${p.id})" class="btn-remover">Remover</button>` : ''}
             </div>
         </div>
     `).join('');
@@ -60,5 +60,5 @@ function removerProduto(id) {
         renderizarCarrinho();
         renderizarPainelCarrinho();   // já atualiza o painel lateral também
     }
-    mostrarNotificacao('🗑️ Produto removido');
+    mostrarNotificacao('Produto removido');
 }
