@@ -28,14 +28,22 @@ nav a {
     text-decoration: none;
 }
 
+.nav-acoes {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
 
 /* ===================== AUTENTICAÇÃO ===================== */
 #painelLogin {
     display: flex;
     align-items: center;
+    order: 1;
 }
 #botoesAdmin {
     display: none;
+    order: 0;
 }
 .btn-admin {
     background-color: #9b59b6;
@@ -664,8 +672,9 @@ nav a {
         font-size: 1.2rem;
     }
 
-    nav > div {
+    .nav-acoes {
         width: 100%;
+        flex-wrap: wrap;
     }
 
     .painel {
