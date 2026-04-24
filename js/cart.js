@@ -12,6 +12,7 @@ function carregarCarrinho() {
 function salvarCarrinho() {
     sessionStorage.setItem('carrinho', JSON.stringify(carrinho));
     localStorage.setItem('carrinho_backup', JSON.stringify(carrinho));
+    localStorage.setItem('carrinho_checkout', JSON.stringify(carrinho));
     atualizarBadgeCarrinho();
 }
 

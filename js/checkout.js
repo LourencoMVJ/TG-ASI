@@ -83,15 +83,14 @@ function finalizarCompra() {
         return;
     }
     if (confirm("confirmar finalizacao da compra? o carrinho sera esvaziado.")) {
-        // Limpa também o carrinho original (chave 'carrinho' usada no cart.js)
-        localStorage.removeItem('carrinho');
+        sessionStorage.removeItem('carrinho');
+        localStorage.removeItem('carrinho_backup');
         localStorage.removeItem('carrinho_checkout');
 
         itensCarrinho = [];
         renderizarCheckout();
         alert("compra finalizada com sucesso. obrigado.");
-        // Opcional: redirecionar para a loja ou página de confirmação
-        // window.location.href = 'index.html';
+        window.location.href = 'index.html';
     }
 }
 
